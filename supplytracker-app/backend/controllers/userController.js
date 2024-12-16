@@ -1,5 +1,5 @@
 const asyncHandler = require("express-async-handler");
-const user = require("../models/userModel");
+const User = require("../models/userModel"); 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -16,14 +16,14 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("Please fill in all required fields");
     }
 
-    const userEmailAlreadyExists = await user.findOne({ email });
+    const userEmailAlreadyExists = await User.findOne({ email }); 
     if (userEmailAlreadyExists) {
         res.status(400);
         throw new Error("Email has already been registered");
     }
 
     if (phone) {
-        const userPhoneAlreadyExists = await user.findOne({ phone });
+        const userPhoneAlreadyExists = await User.findOne({ phone }); 
         if (userPhoneAlreadyExists) {
             res.status(400);
             throw new Error("Phone number has already been registered");
@@ -43,7 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Create new user
-    const newUser = await user.create({
+    const newUser = await User.create({ 
         name,
         email,
         password,
@@ -91,7 +91,7 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     // Check if user exists
-    const existingUser = await user.findOne({ email });
+    const existingUser = await User.findOne({ email }); 
     
     if (!existingUser) {
         res.status(400);
@@ -145,8 +145,28 @@ const logoutUser = asyncHandler(async (req, res) => {
     res.status(200).json({ message: "User logged out successfully" });
 });
 
+const getUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        const { _id, name, email, photo, phone, bio } = user;
+        res.status(200).json({
+            _id,
+            name,
+            email,
+            photo,
+            phone,
+            bio,
+        });
+    } else {
+        res.status(400);
+        throw new Error("User not found");
+    }
+});
+
 module.exports = {
     registerUser,
     loginUser,
     logoutUser,
+    getUser,
 };
