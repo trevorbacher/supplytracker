@@ -10,21 +10,19 @@ The **BCMB Supply Tracker** aims to provide a seamless solution for the members 
 
 - **User Account Management**: 
   - Create accounts
-  - Login and logout functionality
-  - Reset passwords
-  - Update personal information
 
 - **Supply Management**:
-  - View available supplies in real-time
+  - View available supplies
   - Update supply quantities
-  - Add supplies to an in-app cart for easy tracking
+  - Add supplies to an in-app cart for easy reordering 
 
 - **Checkout Process**:
   - View cart contents
-  - Redirect to Staples for checkout (feasibility to be determined)
+  - Redirect to Staples for checkout
 
 - **Supply Requests**:
   - Review new supply requests submitted by general users
+  - Respond to supply requests with a y/n and optional reason
 
 ### For General Users (Other Department Members)
 
@@ -36,7 +34,8 @@ The **BCMB Supply Tracker** aims to provide a seamless solution for the members 
 
 ## Additional Considerations
 
-- Explore integration with third-party services for checkout processes.
+- Integration with third-party services for checkout processes (no idea if this is possible)
+  - e.g press checkout button in cart to be redirected to Staples with a pre-filled cart 
 - Ensure user-friendly design and accessibility for all users.
 
 ---
