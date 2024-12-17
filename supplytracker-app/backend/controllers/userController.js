@@ -81,6 +81,64 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
+const updateUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (!user) {
+        res.status(400);
+        throw new Error("User not found");
+    }
+
+    // Require current password for any update
+    const { currentPassword } = req.body;
+
+    if (!currentPassword) {
+        res.status(400);
+        throw new Error("Current password is required for updates");
+    }
+
+    // Verify the current password
+    const isPasswordCorrect = await bcrypt.compare(currentPassword, user.password);
+    if (!isPasswordCorrect) {
+        res.status(400);
+        throw new Error("Current password is incorrect");
+    }
+
+    // Update fields
+    const { name, email, photo, phone, bio } = user;
+    user.name = req.body.name || name;
+    user.email = req.body.email || email;
+    user.photo = req.body.photo || photo;
+    user.phone = req.body.phone || phone;
+    user.bio = req.body.bio || bio;
+
+    // Handle password update if requested
+    if (req.body.newPassword) {
+        const { newPassword } = req.body;
+    
+        // Validate new password
+        if (newPassword.length < 8) {
+            res.status(400);
+            throw new Error("New password must be at least 8 characters long");
+        }
+    
+        // Set the new password directly
+        user.password = newPassword; // Let the pre-save hook hash the password
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        photo: updatedUser.photo,
+        phone: updatedUser.phone,
+        bio: updatedUser.bio,
+        password: updatedUser.password,
+    });
+});
+
 const loginUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -132,7 +190,28 @@ const loginUser = asyncHandler(async (req, res) => {
 
 });
 
+const loginStatus = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+    if(!token) {
+        return res.json(false);
+    }
+    
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (verified) {
+        return res.json(true);
+    }
+});
+
 const logoutUser = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+
+    // Check if the user is logged in (token exists)
+    if (!token) {
+        res.status(401); // Unauthorized
+        throw new Error("You are not logged in");
+    }
+
+    // Clear the cookie
     res.cookie("token", "", {
         path: "/",
         httpOnly: true,
@@ -149,7 +228,7 @@ const getUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
 
     if (user) {
-        const { _id, name, email, photo, phone, bio } = user;
+        const { _id, name, email, photo, phone, bio, password } = user;
         res.status(200).json({
             _id,
             name,
@@ -157,6 +236,7 @@ const getUser = asyncHandler(async (req, res) => {
             photo,
             phone,
             bio,
+            password,
         });
     } else {
         res.status(400);
@@ -166,7 +246,9 @@ const getUser = asyncHandler(async (req, res) => {
 
 module.exports = {
     registerUser,
+    updateUser,
     loginUser,
+    loginStatus,
     logoutUser,
     getUser,
 };

@@ -14,14 +14,14 @@ const protect = asyncHandler(async (req, res, next) => {
         // Verify token
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         
-        const user = await User.findById(verified.id).select("-password"); // Ensure this uses the correct capitalization
+        const user = await User.findById(verified.id).select("-password");
 
         if (!user) {
             res.status(401);
             throw new Error("User not found");
         }
         
-        req.user = user; // Attach user to the request object
+        req.user = user;
         next();
 
     } catch (error) {
