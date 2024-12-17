@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-The **BCMB Supply Tracker** aims to provide a seamless solution for the members of the University of Tennessee's Biochemistry & Cellular and Molecular Biology Department to effectively track and manage supplies available in the main office.
+The **BCMB Supply Tracker** aims to provide a seamless solution for the members of the University of Tennessee's Biochemistry & Cellular and Molecular Biology Department to effectively track and manage supplies available in the main office. Built using the MERN stack.
 
 ## Planned Features
 
