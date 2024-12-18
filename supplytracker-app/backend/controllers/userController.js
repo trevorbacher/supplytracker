@@ -270,7 +270,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        return res.status(200).json({
+        return res.status(400).json({
             success: false,
             message: "Please provide an email.",
         });
@@ -285,7 +285,7 @@ const forgotPassword = asyncHandler(async (req, res) => {
         });
     }
 
-    // Delete token if it exists in DB
+    // Delete token if it exists in the database
     let token = await Token.findOne({ userId: user._id });
     if (token) {
         await token.deleteOne();
@@ -339,6 +339,37 @@ const forgotPassword = asyncHandler(async (req, res) => {
     }
 });
 
+const resetPassword = asyncHandler(async (req, res) => {
+    
+    const { password } = req.body;
+    const { resetToken } = req.params;
+
+    // Hash token then compare to token in database
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+    
+    // Find token in database
+    const userToken = await Token.findOne({
+        token: hashedToken,
+        expiresAt: {$gt: Date.now()},
+    })
+
+    if (!userToken) {
+        res.status(404);
+        throw new Error("Invalid or expired token");
+    }
+    
+    // Find user
+    const user = await User.findOne({ _id: userToken.userId })
+    user.password = password;
+    await user.save();
+    res.status(200).json({
+        message: "Password reset successful. Please login."
+    });
+});
+
 module.exports = {
     registerUser,
     updateUser,
@@ -347,5 +378,5 @@ module.exports = {
     getUser,
     loginStatus,
     forgotPassword,
-    //resetPassword,
+    resetPassword,
 };
