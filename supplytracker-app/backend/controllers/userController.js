@@ -1,7 +1,11 @@
 const asyncHandler = require("express-async-handler");
-const User = require("../models/userModel"); 
+const User = require("../models/userModel");
+const Token = require("../models/tokenModel");
+
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const sendEmail = require("../utils/sendEmail");
 
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "1d" });
@@ -16,14 +20,14 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error("Please fill in all required fields");
     }
 
-    const userEmailAlreadyExists = await User.findOne({ email }); 
+    const userEmailAlreadyExists = await User.findOne({ email });
     if (userEmailAlreadyExists) {
         res.status(400);
         throw new Error("Email has already been registered");
     }
 
     if (phone) {
-        const userPhoneAlreadyExists = await User.findOne({ phone }); 
+        const userPhoneAlreadyExists = await User.findOne({ phone });
         if (userPhoneAlreadyExists) {
             res.status(400);
             throw new Error("Phone number has already been registered");
@@ -43,7 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 
     // Create new user
-    const newUser = await User.create({ 
+    const newUser = await User.create({
         name,
         email,
         password,
@@ -115,13 +119,13 @@ const updateUser = asyncHandler(async (req, res) => {
     // Handle password update if requested
     if (req.body.newPassword) {
         const { newPassword } = req.body;
-    
+
         // Validate new password
         if (newPassword.length < 8) {
             res.status(400);
             throw new Error("New password must be at least 8 characters long");
         }
-    
+
         // Set the new password directly
         user.password = newPassword; // Let the pre-save hook hash the password
     }
@@ -140,6 +144,24 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+
+    // Check if the user is already logged in (token exists and is valid)
+    if (token) {
+        try {
+            const verified = jwt.verify(token, process.env.JWT_SECRET);
+            if (verified) {
+                return res.status(200).json({
+                    success: true,
+                    message: "User is already logged in",
+                });
+            }
+        } catch (error) {
+            // Token is invalid, proceed with login
+            console.error("Token verification error:", error);
+        }
+    }
+
     const { email, password } = req.body;
 
     // Validate request
@@ -149,8 +171,8 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     // Check if user exists
-    const existingUser = await User.findOne({ email }); 
-    
+    const existingUser = await User.findOne({ email });
+
     if (!existingUser) {
         res.status(400);
         throw new Error("User not found");
@@ -190,25 +212,13 @@ const loginUser = asyncHandler(async (req, res) => {
 
 });
 
-const loginStatus = asyncHandler(async (req, res) => {
-    const token = req.cookies.token;
-    if(!token) {
-        return res.json(false);
-    }
-    
-    const verified = jwt.verify(token, process.env.JWT_SECRET);
-    if (verified) {
-        return res.json(true);
-    }
-});
-
 const logoutUser = asyncHandler(async (req, res) => {
     const token = req.cookies.token;
 
     // Check if the user is logged in (token exists)
     if (!token) {
         res.status(401); // Unauthorized
-        throw new Error("You are not logged in");
+        throw new Error("User is not logged in");
     }
 
     // Clear the cookie
@@ -244,11 +254,98 @@ const getUser = asyncHandler(async (req, res) => {
     }
 });
 
+const loginStatus = asyncHandler(async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        return res.json(false);
+    }
+
+    const verified = jwt.verify(token, process.env.JWT_SECRET);
+    if (verified) {
+        return res.json(true);
+    }
+});
+
+const forgotPassword = asyncHandler(async (req, res) => {
+    const { email } = req.body;
+
+    if (!email) {
+        return res.status(200).json({
+            success: false,
+            message: "Please provide an email.",
+        });
+    }
+
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res.status(200).json({
+            success: true,
+            message: "If the email is registered to an account, a password reset link will be sent shortly.",
+        });
+    }
+
+    // Delete token if it exists in DB
+    let token = await Token.findOne({ userId: user._id });
+    if (token) {
+        await token.deleteOne();
+    }
+
+    // Create reset token
+    let resetToken = crypto.randomBytes(32).toString("hex") + user._id;
+
+    // Hash token before saving to database
+    const hashedToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+
+    // Save token to database
+    await new Token({
+        userId: user._id,
+        token: hashedToken,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + (30 * 60 * 1000) // Thirty minutes
+    }).save();
+
+    const resetUrl = `${process.env.FRONTEND_URL}/resetpassword/${resetToken}`;
+
+    // Reset email
+    const message = `
+        <h2>Hello ${user.name},</h2>
+        <p>Please use the url below to reset your password</p>  
+        <p>This reset link is valid for only 30 minutes.</p>
+        <a href=${resetUrl} clicktracking=off>${resetUrl}</a>
+        <p>Regards,</p>
+        <p>Trevor</p>
+    `;
+
+    const subject = "SupplyTracker Password Reset Request";
+    const send_to = user.email;
+    const sent_from = process.env.EMAIL_USER;
+
+    try {
+        await sendEmail(subject, message, send_to, sent_from);
+        return res.status(200).json({
+            success: true,
+            message: "If the email is registered to an account, a password reset link will be sent shortly."
+        });
+    } catch (error) {
+        console.error('Error sending email:', error);
+        return res.status(500).json({
+            success: false,
+            message: "Email not sent, please try again."
+        });
+    }
+});
+
 module.exports = {
     registerUser,
     updateUser,
     loginUser,
-    loginStatus,
     logoutUser,
     getUser,
+    loginStatus,
+    forgotPassword,
+    //resetPassword,
 };

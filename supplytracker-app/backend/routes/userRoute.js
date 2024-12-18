@@ -5,9 +5,10 @@ const { protect } = require("../middleware/authMiddleware");
 const { registerUser, 
         updateUser,
         loginUser, 
-        loginStatus,
         logoutUser, 
         getUser,
+        loginStatus,
+        forgotPassword,
 } = require("../controllers/userController");
 
 router.post("/register", registerUser);
@@ -16,5 +17,6 @@ router.post("/login", loginUser);
 router.get("/logout", logoutUser);
 router.get("/getuser", protect, getUser);
 router.get("/loggedin", loginStatus);
+router.post("/forgotpassword", forgotPassword);
 
 module.exports = router;
