@@ -2,6 +2,8 @@
 	--background: #ffffff;
 	--foreground: #171717;
 	--tennessee-orange: #FF8200;
+	--smokey-gray: #4B4B4B;
+	--summitt-blue: #489FDF;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -9,6 +11,8 @@
 		--background: #ffffff;
 		--foreground: #000000;
 		--tennessee-orange: #FF8200;
+		--smokey-gray: #4B4B4B;
+		--summitt-blue: #489FDF;
 	}
 }
 
