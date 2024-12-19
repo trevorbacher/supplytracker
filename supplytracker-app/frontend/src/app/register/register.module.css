@@ -1,0 +1,175 @@
+.body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--vol-orange);
+}
+
+.welcomeText {
+  color: #fff;
+  text-align: left;
+  margin-left: 100px;
+  overflow-wrap: normal;
+  width: 28%;
+  text-align: center;
+}
+
+.welcomeText h1 {
+  width: 35vw;
+  font-size: 6vw;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.wrapper {
+  position: relative;
+  max-width: 430px;
+  width: 100%;
+  background: #fff;
+  padding: 34px;
+  border-radius: 6px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.wrapper h2 {
+  position: relative;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--smokey-gray);
+}
+
+.wrapper h2::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 28px;
+  border-radius: 12px;
+  background: var(--vol-orange);
+}
+
+.wrapper form {
+  margin-top: 30px;
+}
+
+.wrapper form .inputBox {
+  height: 52px;
+  margin: 18px 0;
+}
+
+.inputBox {
+  position: relative;
+  width: 100%;
+}
+
+.passwordInput {
+  width: 100%;
+  padding-right: 60px;
+  padding-left: 10px;
+  height: 40px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.togglePassword {
+  position: absolute;
+  background-color: transparent;
+  border: none;
+  color: var(--vol-orange);
+  cursor: pointer;
+  margin-left: -60px;
+  bottom: 17px;
+}
+
+.inputBox input {
+  height: 90%;
+  width: 100%;
+  outline: none;
+  padding: 0 15px;
+  font-size: 17px;
+  font-weight: 400;
+  color: #333;
+  border: 1.5px solid #C7BEBE;
+  border-bottom-width: 2.5px;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  }
+
+.inputBox input:focus,
+.inputBox input:valid {
+  border-color: var(--vol-orange);
+}
+
+.inputBox.button input {
+  color: #fff;
+  letter-spacing: 1px;
+  border: none;
+  background: var(--vol-orange);
+  cursor: pointer;
+}
+
+.inputBox.button input:hover {
+  background: #ec8021;
+  color: #fff;
+  border-color: #fff;
+}
+
+.text h3 {
+  color: var(--smokey-gray);
+  width: 100%;
+  text-align: center;
+}
+
+.text h3 a {
+  color: var(--vol-orange);
+  text-decoration: none;
+}
+
+.text h3 a:hover {
+  text-decoration: underline;
+}
+
+.hidden {
+  display: none;
+}
+
+.alert {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  padding: 20px;
+  font-size: 17px;
+  background-color: #fff;
+  border: 2px solid #f3dac1c5;
+  color: var(--vol-orange);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
+
+.alert::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #fff;
+  border-radius: 5px;
+  z-index: -1;
+}
+
+.alert.hidden {
+  display: none;
+}
+
+#alert-close {
+  background: transparent;
+  border: none;
+  color: var(--vol-orange);
+  font-size: 16px;
+  cursor: pointer;
+  padding-right: 0px;
+}
