@@ -1,21 +1,23 @@
 "use client"
 
 import React, { useEffect } from 'react';
-import styles from './page.module.css';
+import { useRouter } from 'next/navigation';
 
-const Page = () => {
+export default function Page () {
+    const router = useRouter();
+
     useEffect(() => {
         document.title = "BCMB Supply Tracker";
-    }, []);
+        router.push('/dashboard');
+    }, [router]);
 
     return (
-        <div className={styles.container}>
-            <h1 className={styles.title}>Welcome to the Page!</h1>
-            <p className={styles.content}>
-                This is a specific page with its own styles.
-            </p>
-        </div>
+        <html>
+            <body>
+                <div>
+                    
+                </div>
+            </body>
+        </html>
     );
 };
-
-export default Page;

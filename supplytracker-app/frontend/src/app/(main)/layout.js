@@ -1,10 +1,11 @@
-// layout.js
+
+
 import React from 'react';
-import Head from 'next/head'; // Import Head from Next.js
-import './globals.css';
+import Head from 'next/head';
+import '../globals.css';
 import './layout.css';
 
-const Layout = ({ children }) => {
+export default function Layout ({ children }) {
     return (
         <html lang="en">
             <Head>
@@ -27,5 +28,3 @@ const Layout = ({ children }) => {
         </html>
     );
 };
-
-export default Layout;

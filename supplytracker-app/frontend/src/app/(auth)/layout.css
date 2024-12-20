@@ -8,6 +8,7 @@
 header {
     background-color: var(--tennessee-orange);
     color: white;
+    text-align: center;
     padding: 1rem;
 }
 
