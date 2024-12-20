@@ -20,7 +20,7 @@ app.use(cors({
 }));
 
 // Routes Middlewares
-app.use("/api/users", userRoute);
+app.use("/api", userRoute);
 
 // Routes
 app.get("/", (req, res) => {
@@ -32,7 +32,7 @@ app.use(errorHandler);
 
 // Connect to mongoDB and start server
 const PORT = process.env.PORT || 5000;
-mongoose    
+mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {
         app.listen(PORT, () => {

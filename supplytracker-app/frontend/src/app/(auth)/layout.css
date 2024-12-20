@@ -5,13 +5,6 @@
     min-height: 100vh;
 }
 
-header {
-    background-color: var(--tennessee-orange);
-    color: white;
-    text-align: center;
-    padding: 1rem;
-}
-
 nav {
     display: flex;
     justify-content: space-around;
@@ -35,13 +28,6 @@ nav a {
 
 main {
     flex: 1;
-    padding: 2rem;
-    background-color: #f5f5f5;
-}
-
-footer {
-    background-color: var(--tennessee-orange);
-    color: white;
-    text-align: center;
-    padding: 1rem;
+    /* padding: 2rem; */
+    /* background-color: #f5f5f5; */
 }
