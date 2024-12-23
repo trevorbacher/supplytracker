@@ -11,9 +11,6 @@ export default function Page () {
             try {
                 const res = await fetch('http://localhost:5000/api/loggedin', {
                     method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
                 });
 
                 const data = await res.json();
@@ -25,7 +22,7 @@ export default function Page () {
                 }
             } catch (error) {
                 console.error('Error: ', error);
-                // router.push('/login');
+                router.push('/login');
             }
         };
 

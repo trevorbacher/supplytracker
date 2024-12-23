@@ -15,7 +15,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const { name, email, password, photo, phone, bio } = req.body;
 
     // Validate user info
-    if (!name || !email || !password) {
+    if (!email || !password) {
         res.status(400);
         throw new Error("Please fill in all required fields");
     }
@@ -144,45 +144,31 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-    const token = req.cookies.token;
-
-    // Check if the user is already logged in (token exists and is valid)
-    if (token) {
-        try {
-            const verified = jwt.verify(token, process.env.JWT_SECRET);
-            if (verified) {
-                return res.status(200).json({
-                    success: true,
-                    message: "User is already logged in",
-                });
-            }
-        } catch (error) {
-            // Token is invalid, proceed with login
-            console.error("Token verification error:", error);
-        }
-    }
-
     const { email, password } = req.body;
-
+    console.log('Request body:', req.body);
+    
     // Validate request
     if (!email || !password) {
-        res.status(400);
-        throw new Error("Please fill in all required fields");
+        return res.status(400).json({
+            success: false,
+            message: "Please fill in all required fields"
+        });
     }
 
     // Check if user exists
     const existingUser = await User.findOne({ email });
 
     if (!existingUser) {
-        res.status(400);
-        throw new Error("User not found");
+        return res.status(400).json({
+            success: false,
+            message: "User not found"
+        });
     }
 
     // Check if password is correct
     const passwordIsCorrect = await bcrypt.compare(password, existingUser.password);
 
     if (existingUser && passwordIsCorrect) {
-
         // Generate token
         const token = generateToken(existingUser._id);
 
@@ -190,26 +176,31 @@ const loginUser = asyncHandler(async (req, res) => {
         res.cookie("token", token, {
             path: "/",
             httpOnly: true,
-            expires: new Date(Date.now() + 1000 * 86400), // expires in one day
+            expires: new Date(Date.now() + 1000 * 86400),
             sameSite: "none",
             secure: true,
         });
 
         const { _id, name, email, photo, phone, bio } = existingUser;
-        res.status(200).json({
-            _id,
-            name,
-            email,
-            photo,
-            phone,
-            bio,
-            token,
+        return res.status(200).json({
+            success: true,
+            message: "Login successful",
+            data: {
+                _id,
+                name,
+                email,
+                photo,
+                phone,
+                bio,
+                token,
+            }
         });
     } else {
-        res.status(400);
-        throw new Error("Invalid email or password");
+        return res.status(400).json({
+            success: false,
+            message: "Invalid email or password"
+        });
     }
-
 });
 
 const logoutUser = asyncHandler(async (req, res) => {
