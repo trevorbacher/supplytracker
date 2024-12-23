@@ -64,8 +64,8 @@ const registerUser = asyncHandler(async (req, res) => {
         path: "/",
         httpOnly: true,
         expires: new Date(Date.now() + 1000 * 86400), // expires in one day
-        sameSite: "none",
-        secure: true,
+        sameSite: "lax",
+        secure: process.env.NODE_ENV === "production", // Only use secure in production
     });
 
     if (newUser) {
