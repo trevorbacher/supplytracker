@@ -11,6 +11,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('rememberMe') === 'true');
   const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+  const [storedValue, setStoredValue] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -75,6 +76,13 @@ export default function LoginPage() {
     }
   }, [alert.show]);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const value = localStorage.getItem('yourKey');
+      setStoredValue(value);
+    }
+  }, []);
+
   return (
     <div className={styles.body}>
       <div className={styles.wrapper}>
@@ -129,6 +137,7 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
+      <p>Stored Value: {storedValue}</p>
     </div>
   );
 };
