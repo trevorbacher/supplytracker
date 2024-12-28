@@ -144,7 +144,7 @@ const updateUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password, rememberMe } = req.body;
     console.log('Request body:', req.body);
     
     // Validate request
@@ -180,6 +180,16 @@ const loginUser = asyncHandler(async (req, res) => {
             sameSite: "none",
             secure: true,
         });
+
+        // Set a cookie for the email if rememberMe is true
+        if (rememberMe) {
+            res.cookie("rememberedEmail", email, {
+                path: "/",
+                expires: new Date(Date.now() + 1000 * 86400), // expires in one day
+                sameSite: "none",
+                secure: true,
+            });
+        }
 
         const { _id, name, email, photo, phone, bio } = existingUser;
         return res.status(200).json({
