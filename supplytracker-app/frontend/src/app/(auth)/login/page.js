@@ -11,18 +11,6 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
-  useEffect(() => {
-    const rememberedEmail = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('rememberedEmail='))
-        ?.split('=')[1];
-
-    if (rememberedEmail) {
-        setEmail(rememberedEmail);
-        setRememberMe(true); // Automatically check the "Remember Me" box
-    }
-  }, []);
-
   const handleLogin = async (e) => {
     e.preventDefault();
 
