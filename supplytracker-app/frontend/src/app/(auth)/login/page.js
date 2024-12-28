@@ -3,13 +3,15 @@
 import { useState, useEffect } from "react";
 import React from 'react';
 import styles from './page.module.css'
+import { LockClosedIcon, UserIcon } from '@heroicons/react/24/solid';
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('rememberMe') === 'true');
   const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+  const [storedValue, setStoredValue] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ export default function LoginPage() {
     }
 
     try {
-      const res = await fetch('https://supplytracker.vercel.app/api/login', {
+      const res = await fetch('http://localhost:5000/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -73,6 +75,13 @@ export default function LoginPage() {
       return () => clearTimeout(timer);
     }
   }, [alert.show]);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const value = localStorage.getItem('yourKey');
+      setStoredValue(value);
+    }
+  }, []);
 
   return (
     <div className={styles.body}>
@@ -128,6 +137,7 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
+      <p>Stored Value: {storedValue}</p>
     </div>
   );
 };
