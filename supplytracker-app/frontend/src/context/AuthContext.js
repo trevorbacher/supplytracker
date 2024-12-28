@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }) => {
 
     const checkLoginStatus = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/loggedin', {
+            const response = await axios.get('https://supplytracker.vercel.app/api/loggedin', {
                 withCredentials: true
             });
             setIsAuthenticated(response.data);

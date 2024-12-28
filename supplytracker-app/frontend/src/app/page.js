@@ -9,7 +9,7 @@ export default function Page () {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
-                const res = await fetch('http://localhost:5000/api/loggedin', {
+                const res = await fetch('https://supplytracker.vercel.app/api/loggedin', {
                     method: 'GET',
                 });
 
