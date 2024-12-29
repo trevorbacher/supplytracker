@@ -15,17 +15,23 @@ export default function Page () {
                 // Fetching login status from the server
                 const res = await fetch(`${backendURL}/api/loggedin`, {
                     method: 'GET',
+                    credentials: 'include',
                 });
 
-                // Parsing the response data
-                const data = await res.json();
-
-                // Redirecting based on login status
-                if (res.ok && data.loggedIn) {
+                if (!res.ok) {
+                    throw new Error('Failed to fetch login status');
+                }
+        
+                // Parse the response as the raw value (true/false)
+                const loggedIn = await res.json();
+        
+                // Redirect based on login status
+                if (loggedIn === true) {
                     router.push('/dashboard'); // User is logged in
                 } else {
                     router.push('/login'); // User is not logged in
                 }
+                
             } catch (error) {
                 console.error('Error fetching login status: ', error);
                 router.push('/login');
