@@ -6,6 +6,7 @@
 	--summitt-blue: #489FDF;
 }
 
+/* Dark mode styles */
 @media (prefers-color-scheme: dark) {
 	:root {
 		--background: #ffffff;

@@ -1,13 +1,14 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
+// Define the schema for the Token model
 const tokenSchema = mongoose.Schema({
     userId: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: mongoose.Schema.Types.ObjectId, // Reference to the user associated with the token
+        ref: 'user', // Reference to the User model
         required: true,
-        ref: "user",
     },
     token: {
-        type: String,
+        type: String, // The token string
         required: true,
     },
     createdAt: {
@@ -20,5 +21,5 @@ const tokenSchema = mongoose.Schema({
     },
 });
 
-const Token = mongoose.model("Token", tokenSchema);
+const Token = mongoose.model('Token', tokenSchema);
 module.exports = Token;

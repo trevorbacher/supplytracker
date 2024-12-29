@@ -3,14 +3,13 @@
 import { useState, useEffect } from "react";
 import React from 'react';
 import styles from './page.module.css'
-import { LockClosedIcon, UserIcon } from '@heroicons/react/24/solid';
 
 export default function LoginPage() {
   const [email, setEmail] = useState(() => localStorage.getItem('rememberedEmail') || '');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('rememberMe') === 'true');
-  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+  // const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -41,18 +40,20 @@ export default function LoginPage() {
         }
         window.location.href = '/dashboard';
       } else {
-        setAlert({
-          show: true,
-          message: data.message || 'Login failed. Please check your credentials.',
-          type: 'error'
-        });
+        // setAlert({
+        //   show: true,
+        //   message: data.message || 'Login failed. Please check your credentials.',
+        //   type: 'error'
+        // });
+        console.error('Resolution was okay or !data.success:', error);
       }
     } catch (error) {
-      setAlert({
-        show: true,
-        message: 'Network error. Please try again later.',
-        type: 'error'
-      });
+      // setAlert({
+      //   show: true,
+      //   message: 'Network error. Please try again later.',
+      //   type: 'error'
+      // });
+      console.error('Error:', error);
     }
   };
 
@@ -65,15 +66,15 @@ export default function LoginPage() {
     };
   }, [rememberMe]);
 
-  useEffect(() => {
-    if (alert.show) {
-      const timer = setTimeout(() => {
-        setAlert({ show: false, message: '', type: '' });
-      }, 10000);
+  // useEffect(() => {
+  //   if (alert.show) {
+  //     const timer = setTimeout(() => {
+  //       setAlert({ show: false, message: '', type: '' });
+  //     }, 10000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [alert.show]);
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [alert.show]);
 
   return (
     <div className={styles.body}>
@@ -81,11 +82,11 @@ export default function LoginPage() {
         <form onSubmit={handleLogin}>
           <h1 className={styles['login-title']}>Login</h1>
           
-          {alert.show && (
+          {/* {alert.show && (
             <div className={`${styles.alert} ${styles[alert.type]}`}>
               {alert.message}
             </div>
-          )}
+          )} */}
 
           <div className={styles['input-box']}>
             <input

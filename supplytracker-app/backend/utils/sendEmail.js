@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 
-const sendEmail = async (subject, message, send_to, sent_from, reply_to) => {
-    // Create email transporter
+const sendEmail = async (subject, message, send_to, sent_from) => {
+    // Create a transporter object using SMTP configuration
     const transporter = nodemailer.createTransport({
         service: 'gmail',
             auth: {
@@ -10,7 +10,7 @@ const sendEmail = async (subject, message, send_to, sent_from, reply_to) => {
             },
     })
 
-    // Options for sending email
+    // Define the email options
     const options = {
         from: sent_from,
         to: send_to,
@@ -19,12 +19,8 @@ const sendEmail = async (subject, message, send_to, sent_from, reply_to) => {
         html: message,
     }
 
-    // Send email
-    transporter.sendMail(options, function (err, info) {
-        if (err) {
-            console.log(err);
-        }
-    })
+    // Send the email using the transporter
+    await transporter.sendMail(options); // Await the sendMail promise to ensure the email is sent
 };
 
 module.exports = sendEmail;

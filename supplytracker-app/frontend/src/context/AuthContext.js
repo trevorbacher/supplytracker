@@ -3,34 +3,40 @@
 import { createContext, useState, useContext, useEffect } from 'react';
 import axios from 'axios';
 
+// Create the AuthContext with an empty object as the default value
 const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
 
+    // Effect to check login status when the component mounts
     useEffect(() => {
         checkLoginStatus();
-    }, []);
+    }, []); // Empty dependency array means this runs once on mount
 
     const checkLoginStatus = async () => {
         try {
+            // Make a GET request to the backend to check if the user is logged in
             const response = await axios.get('http://localhost:5000/api/loggedin', {
-                withCredentials: true
+                withCredentials: true // Include cookies in the request
             });
-            setIsAuthenticated(response.data);
+            setIsAuthenticated(response.data); // Update authentication state based on response
         } catch (error) {
-            setIsAuthenticated(false);
+            console.error("Error checking login status:", error); // Log the error for debugging
+            setIsAuthenticated(false); // Set to false if there's an error
         } finally {
-            setLoading(false);
+            setLoading(false); // Set loading to false after the check is complete
         }
     };
 
+    // Provide the authentication state and updater function to the context
     return (
         <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, loading }}>
-            {children}
+            {loading ? <div>Loading...</div> : children} {/* Show loading state while checking */}
         </AuthContext.Provider>
     );
 };
 
-export const useAuth = () => useContext(AuthContext); 
+// Custom hook to use the AuthContext
+export const useAuth = () => useContext(AuthContext); // Return the context value for use in components 
