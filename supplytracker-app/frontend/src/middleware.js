@@ -10,11 +10,13 @@ export function middleware(request) {
     
     // Retrieve the token from cookies, defaulting to an empty string if not present
     const token = request.cookies.get('token')?.value || '';
-
+    console.log('Token: ', token);
+    
     // If the user is trying to access a protected path without authentication, redirect to login
     if (!isPublicPath && !token) {
         return NextResponse.redirect(new URL('/login', request.url));
     }
+
 }
 
 // Configuration for the middleware to specify which paths it should apply to
