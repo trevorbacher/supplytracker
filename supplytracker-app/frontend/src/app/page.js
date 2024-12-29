@@ -37,12 +37,8 @@ export default function Page () {
     }, [router]);
 
     return (
-        <html>
-            <body>
-                <div>
-                    
-                </div>
-            </body>
-        </html>
+        <div>
+            
+        </div>
     );
 };

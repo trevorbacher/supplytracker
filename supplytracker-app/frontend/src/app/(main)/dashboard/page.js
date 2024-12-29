@@ -12,7 +12,7 @@ export default function Page () {
 		<div className={styles.container}>
 			<h1 className={styles.title}>Welcome to the Page!</h1>
 			<p className={styles.content}>
-				This is a specific page with its own styles.
+				This is the BCMB Supply Tracker dashboard.
 			</p>
 		</div>
 	);
