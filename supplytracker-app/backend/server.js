@@ -1,11 +1,11 @@
-const dotenv = require("dotenv").config();
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
-const cors = require("cors");
-const userRoute = require("./routes/userRoute");
-const errorHandler = require("./middleware/errorMiddleware");
-const cookieParser = require("cookie-parser");
+const dotenv = require('dotenv').config();
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const userRoute = require('./routes/userRoute');
+const errorHandler = require('./middleware/errorMiddleware');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({
-    origin: [process.env.FRONTEND_URL],
+    origin: [process.env.FRONTEND_URL || 'http://localhost:3000'],
     credentials: true,
 }));
 
@@ -23,11 +23,12 @@ app.use(cors({
 app.options('*', cors());
 
 // Routes Middlewares
-app.use("/api", userRoute);
+app.use('/api', userRoute);
 
 // Routes
-app.get("/", (req, res) => {
-    res.send("Home Page");
+app.get('/', (req, res) => {
+    //res.send('Home Page');
+    res.send(`Backend is configured to accept requests from: ${process.env.FRONTEND_URL}`);
 });
 
 // Error Middlewares

@@ -10,8 +10,10 @@ export default function Page () {
     useEffect(() => {
         const checkLoginStatus = async () => {
             try {
+
+                const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
                 // Fetching login status from the server
-                const res = await fetch('http://localhost:5000/api/loggedin', {
+                const res = await fetch(`${backendURL}/api/loggedin`, {
                     method: 'GET',
                 });
 

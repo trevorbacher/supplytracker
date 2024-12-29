@@ -17,8 +17,9 @@ export const AuthProvider = ({ children }) => {
 
     const checkLoginStatus = async () => {
         try {
+            const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
             // Make a GET request to the backend to check if the user is logged in
-            const response = await axios.get('http://localhost:5000/api/loggedin', {
+            const response = await axios.get(`${backendURL}/api/loggedin`, {
                 withCredentials: true // Include cookies in the request
             });
             setIsAuthenticated(response.data); // Update authentication state based on response
