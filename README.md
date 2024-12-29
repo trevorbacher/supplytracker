@@ -20,11 +20,11 @@ The **BCMB Supply Tracker** aims to provide a seamless solution for the members 
   - View cart contents
   - Redirect to Staples for checkout
 
-- **Supply Requests**:
+- **Supply Requests (very long term)**:
   - Review new supply requests submitted by general users
   - Respond to supply requests with a y/n and optional reason
 
-### For General Users (Other Department Members)
+### For General Users (Other Department Members) (long term) 
 
 - **Supply Visibility**:
   - Browse available supplies in the office
