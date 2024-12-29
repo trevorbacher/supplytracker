@@ -24,8 +24,9 @@ export default function Page () {
         
                 // Parse the response as the raw value (true/false)
                 const loggedIn = await res.json();
-        
-                // Redirect based on login status
+                console.log('loggedIn: ', loggedIn);
+                
+                Redirect based on login status
                 if (loggedIn === true) {
                     router.push('/dashboard'); // User is logged in
                 } else {
@@ -34,7 +35,8 @@ export default function Page () {
                 
             } catch (error) {
                 console.error('Error fetching login status: ', error);
-                router.push('/login');
+                console.log('Error fetching login status: ', error),
+                // router.push('/login');
             }
         };
 
