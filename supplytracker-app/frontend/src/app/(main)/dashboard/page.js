@@ -1,11 +1,11 @@
-"use client"
+'use client'
 
 import React, { useEffect } from 'react';
 import styles from './page.module.css';
 
 export default function Page () {
 	useEffect(() => {
-		document.title = "BCMB Supply Tracker";
+		document.title = 'BCMB Supply Tracker';
 	}, []);
 
 	return (

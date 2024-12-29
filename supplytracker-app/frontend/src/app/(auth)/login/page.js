@@ -1,6 +1,6 @@
-"use client"
+'use client'
 
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import React from 'react';
 import styles from './page.module.css'
 
@@ -93,8 +93,8 @@ export default function LoginPage() {
 
           <div className={styles['input-box']}>
             <input
-              type="text"
-              placeholder="Email"
+              type='text'
+              placeholder='Email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -102,7 +102,7 @@ export default function LoginPage() {
           <div className={styles['input-box']}>
             <input
               type={showPassword ? 'text' : 'password'}
-              placeholder="Password"
+              placeholder='Password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -110,7 +110,7 @@ export default function LoginPage() {
           <div className={styles.togglePasswordContainer}>
             <button
               className={styles.togglePassword}
-              type="button"
+              type='button'
               onClick={() => setShowPassword((prev) => !prev)}
             >
               {showPassword ? 'Hide Password' : 'Show Password'}
@@ -119,17 +119,17 @@ export default function LoginPage() {
           <div className={styles['remember-forget']}>
             <label>
               <input
-                type="checkbox"
+                type='checkbox'
                 checked={rememberMe}
                 onChange={(e) => setRememberMe(e.target.checked)}
               />
               Remember me
             </label>
-            <a href="/forgot-password"> Forgot password?</a>
+            <a href='/forgot-password'> Forgot password?</a>
           </div>
-          <button type="submit" className={styles.btn}>Login</button>
+          <button type='submit' className={styles.btn}>Login</button>
           <div className={styles['register-link']}>
-            <p>Don't have an account? <a href="/register">Register</a></p>
+            <p>Don't have an account? <a href='/register'>Register</a></p>
           </div>
         </form>
       </div>

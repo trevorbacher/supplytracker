@@ -1,7 +1,7 @@
-"use client"
+'use client'
 
 import { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import '../app/globals.css'
 
 // Create the AuthContext with an empty object as the default value
 const AuthContext = createContext({});
@@ -19,12 +19,14 @@ export const AuthProvider = ({ children }) => {
         try {
             const backendURL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:5000';
             // Make a GET request to the backend to check if the user is logged in
-            const response = await axios.get(`${backendURL}/api/loggedin`, {
-                withCredentials: true // Include cookies in the request
+            const response = await fetch(`${backendURL}/api/loggedin`, {
+                method: 'GET',
+                credentials: 'include' // Include cookies in the request
             });
+
             setIsAuthenticated(response.data); // Update authentication state based on response
         } catch (error) {
-            console.error("Error checking login status:", error); // Log the error for debugging
+            console.error('Error checking login status:', error); // Log the error for debugging
             setIsAuthenticated(false); // Set to false if there's an error
         } finally {
             setLoading(false); // Set loading to false after the check is complete
@@ -34,7 +36,7 @@ export const AuthProvider = ({ children }) => {
     // Provide the authentication state and updater function to the context
     return (
         <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, loading }}>
-            {loading ? <div>Loading...</div> : children} {/* Show loading state while checking */}
+            {loading ? <div className='loader'></div> : children} {/* Show loading state while checking */}
         </AuthContext.Provider>
     );
 };

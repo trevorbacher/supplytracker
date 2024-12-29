@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import React from 'react';
 
@@ -8,14 +8,14 @@ export default function RegisterPage () {
 			<h1>Register Page</h1>
 			<form>
 				<div>
-					<label htmlFor="username">Username:</label>
-					<input type="text" id="username" name="username" />
+					<label htmlFor='username'>Username:</label>
+					<input type='text' id='username' name='username' />
 				</div>
 				<div>
-					<label htmlFor="password">Password:</label>
-					<input type="password" id="password" name="password" />
+					<label htmlFor='password'>Password:</label>
+					<input type='password' id='password' name='password' />
 				</div>
-				<button type="submit">Login</button>
+				<button type='submit'>Login</button>
 			</form>
 		</div>
 	);

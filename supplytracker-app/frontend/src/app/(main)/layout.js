@@ -10,9 +10,9 @@ export default function Layout ({ children }) {
         <>
             <Head>
                 <title>Supply Tracker</title>
-                <meta name="description" content="Your page description" />
+                <meta name='description' content='Your page description' />
             </Head>
-            <div className="layout">
+            <div className='layout'>
                 <header>
                     <nav>
                         
