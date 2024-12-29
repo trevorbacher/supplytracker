@@ -15,7 +15,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors({
-    origin: [process.env.FRONTEND_URL || 'http://localhost:3000'],
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
     credentials: true,
 }));
 
@@ -27,8 +27,8 @@ app.use('/api', userRoute);
 
 // Routes
 app.get('/', (req, res) => {
-    //res.send('Home Page');
-    res.send(`Backend is configured to accept requests from: ${process.env.FRONTEND_URL}`);
+    res.send('Home Page');
+    //res.send(`Backend is configured to accept requests from: ${process.env.FRONTEND_URL}`);
 });
 
 // Error Middlewares
