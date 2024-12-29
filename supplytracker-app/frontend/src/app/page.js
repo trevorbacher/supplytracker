@@ -35,7 +35,7 @@ export default function Page () {
                 
             } catch (error) {
                 console.error('Error fetching login status: ', error);
-                console.log('Error fetching login status: ', error),
+                console.log('Error fetching login status: ', error);
                 // router.push('/login');
             }
         };
