@@ -188,7 +188,7 @@ const loginUser = asyncHandler(async (req, res) => {
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 86400),
             sameSite: 'none',
-            secure: true,
+            secure: process.env.NODE_ENV === 'production', // Only use secure in production
         });
 
         // Respond with user data and token
@@ -230,7 +230,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         httpOnly: true,
         expires: new Date(0), // Set the cookie to expire immediately
         sameSite: 'none',
-        secure: true,
+        secure: process.env.NODE_ENV === 'production', // Only use secure in production
     });
 
     // Send response
