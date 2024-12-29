@@ -25,8 +25,8 @@ export default function Page () {
                 // Parse the response as the raw value (true/false)
                 const loggedIn = await res.json();
                 console.log('loggedIn: ', loggedIn);
-                
-                Redirect based on login status
+
+                //Redirect based on login status
                 if (loggedIn === true) {
                     router.push('/dashboard'); // User is logged in
                 } else {
