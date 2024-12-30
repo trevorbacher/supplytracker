@@ -185,7 +185,7 @@ const loginUser = asyncHandler(async (req, res) => {
         // Send HTTP-only cookie with the token
         res.cookie('token', token, {
             path: '/',
-            httpOnly: true,
+            httpOnly: false,
             expires: new Date(Date.now() + 1000 * 86400),
             sameSite: 'None',
             secure: process.env.NODE_ENV === 'production', // Only use secure in production
