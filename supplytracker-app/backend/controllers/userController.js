@@ -187,7 +187,7 @@ const loginUser = asyncHandler(async (req, res) => {
             path: '/',
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 86400),
-            sameSite: 'none',
+            sameSite: 'lax',
             secure: process.env.NODE_ENV === 'production', // Only use secure in production
         });
 
@@ -229,7 +229,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         path: '/',
         httpOnly: true,
         expires: new Date(0), // Set the cookie to expire immediately
-        sameSite: 'none',
+        sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production', // Only use secure in production
     });
 
