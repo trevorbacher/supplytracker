@@ -187,9 +187,8 @@ const loginUser = asyncHandler(async (req, res) => {
             path: '/',
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 86400),
-            sameSite: 'None',
+            sameSite: 'none',
             secure: process.env.NODE_ENV === 'production', // Only use secure in production
-            domain: '.supplytracker.vercel.app'
         });
 
         // Respond with user data and token
