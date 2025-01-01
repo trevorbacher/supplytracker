@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export async function middleware(request) {
+export function middleware(request) {
     const path = request.nextUrl.pathname;
 
     // Define public paths that do not require authentication
