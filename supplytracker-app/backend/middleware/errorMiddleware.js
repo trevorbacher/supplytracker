@@ -6,7 +6,7 @@ const errorHandler = (err, req, res, next) => {
 
     // Send JSON response with error details
     res.json({
-        message: err.message, // Error message
+        message: err.message || 'Internal server error', // Error message
         stack: process.env.NODE_ENV === 'development' ? err.stack : null // Include stack trace in development mode
     });
 };
