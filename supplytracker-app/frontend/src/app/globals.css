@@ -1,5 +1,5 @@
 :root {
-	--background: #ffffff;
+	--background: #f5f5f5;
 	--foreground: #171717;
 	--tennessee-orange: #FF8200;
 	--smokey-gray: #4B4B4B;
@@ -9,7 +9,7 @@
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
 	:root {
-		--background: #ffffff;
+		--background: #f5f5f5;
 		--foreground: #000000;
 		--tennessee-orange: #FF8200;
 		--smokey-gray: #4B4B4B;

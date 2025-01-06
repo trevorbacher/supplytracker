@@ -9,10 +9,11 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(() => localStorage.getItem('rememberMe') === 'true');
-  // const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setErrorMessage('');
 
     if (rememberMe) {
       localStorage.setItem('rememberedEmail', email);
@@ -43,20 +44,12 @@ export default function LoginPage() {
         }
         window.location.href = '/dashboard';
       } else {
-        // setAlert({
-        //   show: true,
-        //   message: data.message || 'Login failed. Please check your credentials.',
-        //   type: 'error'
-        // });
-        console.error('Resolution was okay or !data.success:', error);
+        setErrorMessage('Invalid username or password');
+        // console.error('Resolution was okay or !data.success:', error);
       }
     } catch (error) {
-      // setAlert({
-      //   show: true,
-      //   message: 'Network error. Please try again later.',
-      //   type: 'error'
-      // });
-      console.error('Error:', error);
+      
+      setErrorMessage('Network error. Please try again');
     }
   };
 
@@ -69,28 +62,12 @@ export default function LoginPage() {
     };
   }, [rememberMe]);
 
-  // useEffect(() => {
-  //   if (alert.show) {
-  //     const timer = setTimeout(() => {
-  //       setAlert({ show: false, message: '', type: '' });
-  //     }, 10000);
-
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, [alert.show]);
-
   return (
     <div className={styles.body}>
       <div className={styles.wrapper}>
         <form onSubmit={handleLogin}>
           <h1 className={styles['login-title']}>Login</h1>
-          
-          {/* {alert.show && (
-            <div className={`${styles.alert} ${styles[alert.type]}`}>
-              {alert.message}
-            </div>
-          )} */}
-
+          {errorMessage && <p className={styles.error}>{errorMessage}</p>}
           <div className={styles['input-box']}>
             <input
               type='text'
@@ -106,6 +83,7 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            
           </div>
           <div className={styles.togglePasswordContainer}>
             <button

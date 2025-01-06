@@ -239,7 +239,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 
 // Get user information
 const getUser = asyncHandler(async (req, res) => {
-    const user = await User.findById.lean(req.user._id);
+    const user = await User.findById(req.user._id);
 
     // Respond with user data
     if (user) {
