@@ -72,7 +72,6 @@ const registerUser = asyncHandler(async (req, res) => {
         sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production', // Only use secure in production
         domain: process.env.NODE_ENV === 'production' ? 'supplytracker.vercel.app' : 'localhost'
-});
     });
 
     // Respond with user data and token
