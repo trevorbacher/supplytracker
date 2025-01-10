@@ -64,14 +64,16 @@ const registerUser = asyncHandler(async (req, res) => {
     // Generate token for the new user
     const token = generateToken(newUser._id);
 
+    console.log('Sending cookie:', token);
+
     // Send HTTP-only cookie with the token
     res.cookie('token', token, {
         path: '/',
         httpOnly: true,
         expires: new Date(Date.now() + 1000 * 86400), // Expires in one day
-        sameSite: 'lax',
+        sameSite: 'none',
         secure: process.env.NODE_ENV === 'production', // Only use secure in production
-        domain: process.env.NODE_ENV === 'production' ? 'supplytracker.vercel.app' : 'localhost'
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
     });
 
     // Respond with user data and token
@@ -183,13 +185,16 @@ const loginUser = asyncHandler(async (req, res) => {
         // Generate token
         const token = generateToken(existingUser._id);
 
+        console.log('Sending cookie:', token);
+
         // Send HTTP-only cookie with the token
         res.cookie('token', token, {
             path: '/',
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 86400),
-            sameSite: 'lax',
+            sameSite: 'none',
             secure: process.env.NODE_ENV === 'production', // Only use secure in production
+            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
         });
 
         // Respond with user data and token
@@ -225,13 +230,16 @@ const logoutUser = asyncHandler(async (req, res) => {
         throw new Error('User is not logged in');
     }
 
+    console.log('Sending cookie:', token);
+    
     // Clear the cookie
     res.cookie('token', '', {
         path: '/',
         httpOnly: true,
         expires: new Date(0), // Set the cookie to expire immediately
-        sameSite: 'lax',
+        sameSite: 'none',
         secure: process.env.NODE_ENV === 'production', // Only use secure in production
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
     });
 
     // Send response
