@@ -13,9 +13,9 @@ export function middleware(request) {
     console.log('Token: ', token);
     console.log('isPublicPath: ', isPublicPath);
     // If the user is trying to access a protected path without authentication, redirect to login
-    // if (!isPublicPath && !token) {
-    //     return NextResponse.redirect(new URL('/login', request.url));
-    // }
+    if (!isPublicPath && !token) {
+        return NextResponse.redirect(new URL('/login', request.url));
+    }
 }
 
 // Configuration for the middleware to specify which paths it should apply to
