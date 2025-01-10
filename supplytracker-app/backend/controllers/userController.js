@@ -73,7 +73,7 @@ const registerUser = asyncHandler(async (req, res) => {
         expires: new Date(Date.now() + 1000 * 86400), // 1 day
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
+        domain: process.env.NODE_ENV === 'production' ? 'supplytracker.vercel.app' : 'localhost'
     };
 
     // Send HTTP-only cookie
@@ -195,7 +195,7 @@ const loginUser = asyncHandler(async (req, res) => {
             expires: new Date(Date.now() + 1000 * 86400), // 1 day
             secure: process.env.NODE_ENV === 'production',
             sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
+            domain: process.env.NODE_ENV === 'production' ? 'supplytracker.vercel.app' : 'localhost'
         };
 
         // Send HTTP-only cookie
@@ -232,7 +232,7 @@ const logoutUser = asyncHandler(async (req, res) => {
         expires: new Date(0),
         secure: process.env.NODE_ENV === 'production',
         sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
+        domain: process.env.NODE_ENV === 'production' ? 'supplytracker.vercel.app' : 'localhost'
     };
 
     res.cookie('token', '', cookieOptions);
