@@ -66,14 +66,18 @@ const registerUser = asyncHandler(async (req, res) => {
 
     console.log('Sending cookie:', token);
 
-    // Send HTTP-only cookie with the token
-    res.cookie('token', token, {
+    // Configure cookie options based on environment
+    const cookieOptions = {
         path: '/',
         httpOnly: true,
-        expires: new Date(Date.now() + 1000 * 86400), // Expires in one day
-        sameSite: 'lax',
-        secure: process.env.NODE_ENV === 'production', // Only use secure in production
-    });
+        expires: new Date(Date.now() + 1000 * 86400), // 1 day
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
+    };
+
+    // Send HTTP-only cookie
+    res.cookie('token', token, cookieOptions);
 
     // Respond with user data and token
     if (newUser) {
@@ -190,7 +194,8 @@ const loginUser = asyncHandler(async (req, res) => {
             httpOnly: true,
             expires: new Date(Date.now() + 1000 * 86400), // 1 day
             secure: process.env.NODE_ENV === 'production',
-            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
         };
 
         // Send HTTP-only cookie
@@ -226,7 +231,8 @@ const logoutUser = asyncHandler(async (req, res) => {
         httpOnly: true,
         expires: new Date(0),
         secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
     };
 
     res.cookie('token', '', cookieOptions);
