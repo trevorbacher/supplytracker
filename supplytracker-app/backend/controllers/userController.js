@@ -73,7 +73,6 @@ const registerUser = asyncHandler(async (req, res) => {
         expires: new Date(Date.now() + 1000 * 86400), // Expires in one day
         sameSite: 'none',
         secure: process.env.NODE_ENV === 'production', // Only use secure in production
-        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
     });
 
     // Respond with user data and token
@@ -194,7 +193,6 @@ const loginUser = asyncHandler(async (req, res) => {
             expires: new Date(Date.now() + 1000 * 86400),
             sameSite: 'none',
             secure: process.env.NODE_ENV === 'production', // Only use secure in production
-            domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
         });
 
         // Respond with user data and token
@@ -231,7 +229,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     }
 
     console.log('Sending cookie:', token);
-    
+
     // Clear the cookie
     res.cookie('token', '', {
         path: '/',
