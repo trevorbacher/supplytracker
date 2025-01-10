@@ -1,29 +1,31 @@
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
-    const path = request.nextUrl.pathname;
+  // Add detailed logging for debugging
+  console.log('Request URL:', request.url);
+  console.log('All Cookies:', request.cookies.getAll());
+  
+  const path = request.nextUrl.pathname;
+  const isPublicPath = path === '/login' || path === '/register' || path === '/forgot-password';
+  
+  // Get token with more detailed error handling
+  const token = request.cookies.get('token')?.value;
+  console.log('Token Value:', token);
+  
+  if (!isPublicPath && !token) {
+    console.log('Redirecting to login - No token found');
+    return NextResponse.redirect(new URL('/login', request.url));
+  }
 
-    // Define public paths that do not require authentication
-    const isPublicPath = path === '/login' || 
-                        path === '/register' || 
-                        path === '/forgot-password';
-    
-    // Retrieve the token from cookies, defaulting to an empty string if not present
-    const token = request.cookies.get('token')?.value || '';
-    console.log('Token: ', token);
-    console.log('isPublicPath: ', isPublicPath);
-    // If the user is trying to access a protected path without authentication, redirect to login
-    if (!isPublicPath && !token) {
-        return NextResponse.redirect(new URL('/login', request.url));
-    }
+  return NextResponse.next();
 }
 
-// Configuration for the middleware to specify which paths it should apply to
+// Ensure middleware runs on all relevant paths
 export const config = {
-    matcher: [
-        '/login',
-        '/register',
-        '/forgot-password',
-        '/dashboard/:path*' // Matches all sub-paths under /dashboard
-    ]
-}; 
+  matcher: [
+    '/login',
+    '/register',
+    '/forgot-password',
+    '/dashboard/:path*'
+  ]
+};
