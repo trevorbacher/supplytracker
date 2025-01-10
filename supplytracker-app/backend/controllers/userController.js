@@ -71,7 +71,7 @@ const registerUser = asyncHandler(async (req, res) => {
         path: '/',
         httpOnly: true,
         expires: new Date(Date.now() + 1000 * 86400), // Expires in one day
-        sameSite: 'none',
+        sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production', // Only use secure in production
     });
 
@@ -184,16 +184,17 @@ const loginUser = asyncHandler(async (req, res) => {
         // Generate token
         const token = generateToken(existingUser._id);
 
-        console.log('Sending cookie:', token);
-
-        // Send HTTP-only cookie with the token
-        res.cookie('token', token, {
+        // Configure cookie options based on environment
+        const cookieOptions = {
             path: '/',
             httpOnly: true,
-            expires: new Date(Date.now() + 1000 * 86400),
-            sameSite: 'none',
-            secure: process.env.NODE_ENV === 'production', // Only use secure in production
-        });
+            expires: new Date(Date.now() + 1000 * 86400), // 1 day
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+        };
+
+        // Send HTTP-only cookie
+        res.cookie('token', token, cookieOptions);
 
         // Respond with user data and token
         const { _id, name, email, photo, phone, bio } = existingUser;
@@ -220,27 +221,15 @@ const loginUser = asyncHandler(async (req, res) => {
 
 // Logout user
 const logoutUser = asyncHandler(async (req, res) => {
-    const token = req.cookies.token;
-
-    // Check if the user is logged in (token exists)
-    if (!token) {
-        res.status(401); // Unauthorized
-        throw new Error('User is not logged in');
-    }
-
-    console.log('Sending cookie:', token);
-
-    // Clear the cookie
-    res.cookie('token', '', {
+    const cookieOptions = {
         path: '/',
         httpOnly: true,
-        expires: new Date(0), // Set the cookie to expire immediately
-        sameSite: 'none',
-        secure: process.env.NODE_ENV === 'production', // Only use secure in production
-        domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : 'localhost'
-    });
+        expires: new Date(0),
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    };
 
-    // Send response
+    res.cookie('token', '', cookieOptions);
     res.status(200).json({ message: 'User logged out successfully' });
 });
 
